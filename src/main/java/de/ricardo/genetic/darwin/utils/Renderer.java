@@ -42,7 +42,8 @@ public class Renderer {
 	}
 	
 	public static BufferedImage renderIndividuumToCanvas(Individuum individuum, BufferedImage prevorirousDrawing) {
-		BufferedImage newImage = prevorirousDrawing;
+		BufferedImage newImage = new BufferedImage(prevorirousDrawing.getWidth(), prevorirousDrawing.getHeight(), prevorirousDrawing.getType());
+		newImage.setData(prevorirousDrawing.getData());
 		
 		Graphics2D g2d = newImage.createGraphics();
 		g2d.setColor(individuum.getDNA().Color);
