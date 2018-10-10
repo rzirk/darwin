@@ -26,8 +26,8 @@ public class App
 {
 	public static void main( String[] args )
 	{
-		int size_population = 100;
-		int best_sample = 10;
+		int size_population = 120;
+		int best_sample = 12;
 		int lucky_few = 10;
 		int number_of_child = size_population / best_sample;
 		int number_of_generation = 10;
@@ -41,7 +41,7 @@ public class App
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    
-		
+
 		Cache.getInstance().setGoalImage(goal);
 
 		Fitness fitness = new Fitness();
@@ -73,20 +73,16 @@ public class App
 				}
 
 				//CalculateFitness
-				for (int j = 0; j < population.size(); j++) {
 
-					BufferedImage localCanvas = new BufferedImage(goal.getWidth(), goal.getHeight(), goal.getType()); 
-					localCanvas.setData(canvas.getRaster());
+				BufferedImage localCanvas = new BufferedImage(goal.getWidth(), goal.getHeight(), goal.getType()); 
+				localCanvas.setData(canvas.getRaster());
 
-					//if(i == 0) {
-					population.get(j).fitness = fitness.calculateFitnessLinear(population.get(j),
-							localCanvas, goal); 
-					/*}
-					else {
-						population.get(j).fitness = fitness.calculateFitnessLinearComparision(population.get(j),
-								localCanvas, prevCanvas, goal);
-					}*/
+				double fitnessValues[] = new double[population.size()];
+				fitnessValues = fitness.calculateFitnessLinear(population, localCanvas, goal);
+				for(int j=0; j<population.size(); j++) {
+					population.get(j).fitness = fitnessValues[j];
 				}
+
 				//SortByFitness [Selection] (High index is better)
 				population = Selection.sortPopulationByFitness(population);
 
