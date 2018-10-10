@@ -60,13 +60,13 @@ public class Individuum implements Comparable<Individuum>{
 
     public int compareTo(Individuum o){
 		
-		if (this.fitness < o.fitness) {
+		if (this.fitness > o.fitness) {
 			return -1;
 		}
 		if (this.fitness == o.fitness) {
 			return 0;
 		}
-		if (this.fitness > o.fitness) {
+		if (this.fitness < o.fitness) {
 			return 1;
 		}
 		
