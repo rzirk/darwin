@@ -15,6 +15,7 @@ import org.math.plot.Plot2DPanel;
 import com.arturmkrtchyan.sizeof4j.SizeOf;
 
 import de.ricardo.genetic.darwin.modules.*;
+import de.ricardo.genetic.darwin.utils.Cache;
 import de.ricardo.genetic.darwin.utils.Renderer;
 
 /**
@@ -40,6 +41,8 @@ public class App
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    
+		
+		Cache.getInstance().setGoalImage(goal);
 
 		Fitness fitness = new Fitness();
 

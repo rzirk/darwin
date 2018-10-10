@@ -29,9 +29,13 @@ public class Reproduction {
 
 		long sum_r = 0, sum_g = 0, sum_b = 0;
 		
+		int test[] = new  int[rect.width*rect.height];
+		Cache.getInstance().goal.getRGB(rect.x, rect.y, rect.width, rect.height, test, 0, 1);
+		
 		for(int x = rect.x; x < rect.x + rect.width; x++) {
 			for(int y = rect.y; y < rect.y + rect.height; y++) {
-				int RGBColor = Cache.getInstance().goal.getRGB(x,y);
+				
+				int RGBColor = test[(y-rect.y) + (x-rect.x)];
 				Color color = new Color(RGBColor);
 
 				sum_r += color.getRed();

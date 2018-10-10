@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,16 +59,21 @@ public class CreatePopulation {
 		rect.add(Renderer.DNARangeToImageRange(endPoint, goal));
 
 		long sum_r = 0, sum_g = 0, sum_b = 0;
-		Cache.getInstance().setGoalImage(goal);
 		
-		for(int x = rect.x; x < rect.x + rect.width; x++) {
-			for(int y = rect.y; y < rect.y + rect.height; y++) {
-				int RGBColor = Cache.getInstance().goal.getRGB(x,y);
-				Color color = new Color(RGBColor);
+		final WritableRaster inRaster = goal.getRaster();
 
-				sum_r += color.getRed();
-				sum_g += color.getBlue();
-				sum_b += color.getGreen();			
+		int[] pixels = new int[3*goal.getWidth()];
+
+		for(int y = rect.y; y < rect.y + rect.height; y++) {
+
+			pixels = inRaster.getPixels( 0, y, rect.y + rect.height, 1, pixels );
+
+			for(int x = rect.x; x < rect.x + rect.width; x++) {
+				int m = x*3; 	
+
+				sum_r += pixels[m+0]; 
+				sum_g += pixels[m+1]; 
+				sum_b += pixels[m+2]; 
 			}
 		}
 		
