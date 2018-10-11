@@ -18,60 +18,59 @@ public class FitnessThread implements Callable<double[]> {
 		this.currentDrawings = currentDrawings;
 		this.goal = goal;
 	}
-	
+
 	public double[] getGlobalFitness(List<BufferedImage> currentDrawings,
 			BufferedImage goal) throws Exception
 	{
 		double results[] = new double[currentDrawings.size()];
-		
+
 		for (int i = 0; i < currentDrawings.size(); i++) {
-		
-		BufferedImage currentDrawing = currentDrawings.get(i);
-		
-		int difference = 0;
 
-		if ((currentDrawing.getWidth() != goal.getWidth()) || currentDrawing.getHeight() != goal.getHeight()) {
-			throw new Exception();
-		}
+			BufferedImage currentDrawing = currentDrawings.get(i);
 
-		final WritableRaster inRaster     = goal.getRaster();
-		final WritableRaster inRasterComp = currentDrawing.getRaster();
+			int difference = 0;
 
-		int[] pixels = new int[3*goal.getWidth()];
-		int[] pixel_compare = new int[3*currentDrawing.getWidth()];
-
-		for(int y = 0; y < goal.getHeight(); y++) {
-
-			pixels = inRaster.getPixels( 0, y, goal.getWidth(), 1, pixels );
-			pixel_compare = inRasterComp.getPixels( 0, y, currentDrawing.getWidth(), 1, pixel_compare );
-
-			for(int x = 0; x < goal.getWidth(); x++) {
-				int m = x*3;
-				
-				difference += Math.abs(pixels[m+0] - pixel_compare[m]); //Rot 
-				difference += Math.abs(pixels[m+1] - pixel_compare[m+1]);//Grün 
-				difference += Math.abs(pixels[m+2] - pixel_compare[m+1]);//Blau
+			if ((currentDrawing.getWidth() != goal.getWidth()) || currentDrawing.getHeight() != goal.getHeight()) {
+				throw new Exception();
 			}
-		}
 
-		// Total number of red pixels = width * height 
-		// Total number of blue pixels = width * height 
-		// Total number of green pixels = width * height 
-		// So total number of pixels = width * height * 3 
-		double total_pixels = goal.getWidth() * goal.getHeight() * 3; 
+			final WritableRaster inRaster     = goal.getRaster();
+			final WritableRaster inRasterComp = currentDrawing.getRaster();
 
-		// Normalizing the value of different pixels 
-		// for accuracy(average pixels per color 
-		// component) 
-		double avg_different_pixels = difference / 
-				total_pixels; 
+			int[] pixels = new int[3*goal.getWidth()];
+			int[] pixel_compare = new int[3*currentDrawing.getWidth()];
 
-		// There are 255 values of pixels in total 
-		double percentage = (avg_different_pixels / 
-				255) * 100; 
-		
-		results[i] = 100 - percentage;
-		
+			double fitness = 0;
+			float deltaRed = 0;
+			float deltaGreen = 0;
+			float deltaBlue = 0;
+			float pixelFitness = 0;
+
+			for(int y = 0; y < goal.getHeight(); y++) {
+
+				pixels = inRaster.getPixels( 0, y, goal.getWidth(), 1, pixels );
+				pixel_compare = inRasterComp.getPixels( 0, y, currentDrawing.getWidth(), 1, pixel_compare );
+
+				for(int x = 0; x < goal.getWidth(); x++) {
+					int m = x*3;
+
+					deltaRed = pixels[m+0] - pixel_compare[m]; //Rot 
+					deltaGreen = pixels[m+1] - pixel_compare[m+1];//Grün 
+					deltaBlue = pixels[m+2] - pixel_compare[m+1];//Blau
+
+					pixelFitness = deltaRed * deltaRed +
+							deltaGreen * deltaGreen +
+							deltaBlue * deltaBlue;
+
+					//add the pixel fitness to the total fitness ( lower is better )
+					fitness += Math.sqrt(pixelFitness);
+				}
+
+
+			}
+
+			results[i] = fitness;
+
 		}
 
 		return results;

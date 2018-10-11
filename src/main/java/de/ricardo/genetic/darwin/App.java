@@ -27,11 +27,10 @@ public class App
 {
 	public static void main( String[] args )
 	{
-		int size_population = 120;
-		int best_sample = 12;
-		int lucky_few = 10;
+		int size_population = 20;
+		int best_sample = 2;
 		int number_of_child = size_population / best_sample;
-		int number_of_generation = 10;
+		int number_of_generation = 5;
 		int chance_of_mutation = 20;
 
 		BufferedImage goal = null;
@@ -49,7 +48,31 @@ public class App
 		BufferedImage canvas = new BufferedImage(goal.getWidth(), goal.getHeight(), goal.getType()); 
 		Graphics2D    graphics = canvas.createGraphics();
 
-		graphics.setColor(Color.MAGENTA);
+		//===============
+		long sum_r = 0, sum_g = 0, sum_b = 0;
+				
+		for(int x = 0; x < goal.getWidth(); x++) {
+			for(int y = 0; y < goal.getHeight(); y++) {
+				
+				int RGBColor = goal.getRGB(x, y);
+				Color color = new Color(RGBColor);
+
+				sum_r += color.getRed();
+				sum_g += color.getBlue();
+				sum_b += color.getGreen();			
+			}
+		}
+		
+		int size = goal.getWidth()*goal.getHeight();
+		
+
+			 Color color = new Color((int) (sum_r / size),
+					(int) (sum_g / size),
+					(int) (sum_b / size));	
+		
+		//=====================
+		
+		graphics.setColor(color);
 		graphics.fillRect ( 0, 0, canvas.getWidth(), canvas.getHeight() );
 		double alikness = 0.0;
 		BufferedImage prevCanvas = null;

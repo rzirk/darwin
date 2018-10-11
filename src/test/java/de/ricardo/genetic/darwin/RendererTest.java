@@ -51,7 +51,8 @@ public class RendererTest extends TestCase {
 		Color color = Color.red;
 
 		BufferedImage canvas = new BufferedImage(400, 400, BufferedImage.TYPE_3BYTE_BGR);
-		Individuum individuum = new Individuum(startPoint, endPoint, color);
+
+		Individuum individuum = new Individuum(startPoint, endPoint);
 		 canvas = renderer.renderIndividuumToCanvas(individuum, canvas);
 		 
 		 Fitness fitness = new Fitness();

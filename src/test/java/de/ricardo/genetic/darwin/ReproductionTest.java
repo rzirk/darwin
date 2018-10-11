@@ -11,10 +11,8 @@ import junit.framework.TestCase;
 public class ReproductionTest extends TestCase {
 
 	public void testCreateChild() {
-		Individuum parent1 = new Individuum(new Point(10, 50), new Point(20, 90),
-				new Color(32, 23, 100));
-		Individuum parent2 = new Individuum(new Point(10, 50), new Point(20, 90),
-				new Color(32, 23, 100));
+		Individuum parent1 = new Individuum(new Point(10, 50), new Point(20, 90));
+		Individuum parent2 = new Individuum(new Point(10, 50), new Point(20, 90));
 		
 		Reproduction reproduction = new Reproduction();
 		

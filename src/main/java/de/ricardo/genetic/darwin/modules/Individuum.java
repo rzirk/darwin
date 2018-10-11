@@ -15,7 +15,6 @@ public class Individuum implements Comparable<Individuum>{
 	public class CubeDNA { 
 		public Point start; //Die Punkte müssen auf die Bildgröße gemappt werden
 		public Point end;
-		public Color Color; //Wird algorithmisch erfasst
 		
 		public boolean compare(CubeDNA dna1, CubeDNA dna2) {
 			boolean result = true;
@@ -25,10 +24,6 @@ public class Individuum implements Comparable<Individuum>{
 			}
 			
 			if(!dna1.end.equals(dna2.end)) {
-				result = false;
-			}
-			
-			if(!dna1.Color.equals(dna2.Color)) {
 				result = false;
 			}
 			
@@ -47,26 +42,25 @@ public class Individuum implements Comparable<Individuum>{
 		DNA = dNA;
 	}
 	
-	public Individuum(Point startPoint, Point endPoint, Color color) {
+	public Individuum(Point startPoint, Point endPoint) {
 		
 		DNA = new CubeDNA();
 		
 		DNA.start = startPoint;
 		DNA.end = endPoint;
-		DNA.Color = color;
 		
 		fitness = -1.0;
 	}
 
     public int compareTo(Individuum o){
 		
-		if (this.fitness < o.fitness) {
+		if (this.fitness > o.fitness) {
 			return -1;
 		}
 		if (this.fitness == o.fitness) {
 			return 0;
 		}
-		if (this.fitness > o.fitness) {
+		if (this.fitness < o.fitness) {
 			return 1;
 		}
 		
