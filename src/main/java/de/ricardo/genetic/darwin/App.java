@@ -13,8 +13,6 @@ import javax.swing.JFrame;
 
 import org.math.plot.Plot2DPanel;
 
-import com.arturmkrtchyan.sizeof4j.SizeOf;
-
 import de.ricardo.genetic.darwin.modules.*;
 import de.ricardo.genetic.darwin.utils.Cache;
 import de.ricardo.genetic.darwin.utils.Renderer;
@@ -27,11 +25,10 @@ public class App
 {
 	public static void main( String[] args )
 	{
-		int size_population = 20;
-		int best_sample = 2;
-		int number_of_child = size_population / best_sample;
-		int number_of_generation = 5;
-		int chance_of_mutation = 20;
+		int size_population = 100;
+		int best_sample = 10;
+		int number_of_generation = 10;
+		int chance_of_mutation = 5;
 
 		BufferedImage goal = null;
 		try {
@@ -42,8 +39,6 @@ public class App
 		}    
 
 		Cache.getInstance().setGoalImage(goal);
-
-		Fitness fitness = new Fitness();
 
 		BufferedImage canvas = new BufferedImage(goal.getWidth(), goal.getHeight(), goal.getType()); 
 		Graphics2D    graphics = canvas.createGraphics();
@@ -58,8 +53,8 @@ public class App
 				Color color = new Color(RGBColor);
 
 				sum_r += color.getRed();
-				sum_g += color.getBlue();
-				sum_b += color.getGreen();			
+				sum_g += color.getGreen();
+				sum_b += color.getBlue();			
 			}
 		}
 		
@@ -67,27 +62,21 @@ public class App
 		
 
 			 Color color = new Color((int) (sum_r / size),
-					(int) (sum_g / size),
-					(int) (sum_b / size));	
+					 (int) (sum_g / size),
+					 (int) (sum_b / size));	
 		
 		//=====================
 		
 		graphics.setColor(color);
 		graphics.fillRect ( 0, 0, canvas.getWidth(), canvas.getHeight() );
 		double alikness = 0.0;
-		BufferedImage prevCanvas = null;
 
-		CreatePopulation createPopulation = new CreatePopulation();
-		//List<Individuum> population = createPopulation.initializePopulation(size_population, goal);
-
-		int k = 0;
-		double delta = 1.0;
-		double prevoriousFitness = 0.0;
 		Renderer renderer = new Renderer();
 		GenerationStepper generationStepper = new GenerationStepper();
 
-		while (alikness < 95.0) {//Komplettes Bild
-			k++;
+		int generationCounter = 0;
+		while (alikness < 90.0) {//Komplettes Bild
+			generationCounter++;
 			List<Individuum> population = new ArrayList<Individuum>();
 			try {
 				population = generationStepper.startNextGeneration(
@@ -97,14 +86,18 @@ public class App
 				e1.printStackTrace();
 			}
 
-			
+			System.out.println("Iteration: "+generationCounter);
+			System.out.println("Best Fitness: "+population.get(population.size()-1).fitness);
+			System.out.println("Worst Fitness: "+population.get(0).fitness);
+			System.out.println();
+
 			//Render best solution
-			prevCanvas = canvas;
 			canvas = renderer.renderIndividuumToCanvas(population.get(population.size()-1), canvas);
-			String test = "C:\\Users\\ricardo\\Desktop\\genetischeAlgorithmen\\test\\Testrender\\outputGen"+k+".jpg";
+			alikness = population.get(population.size()-1).fitness;
+
+			String test = "C:\\Users\\ricardo\\Desktop\\genetischeAlgorithmen\\test\\Testrender\\outputGen"+generationCounter+".jpg";
 			try {
 				ImageIO.write(canvas, "jpg", new File(test));
-				alikness = fitness.getGlobalFitness(canvas, goal);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -113,7 +106,6 @@ public class App
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 	}
 }

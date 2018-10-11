@@ -43,8 +43,7 @@ public class Renderer {
 	}
 	
 	public BufferedImage renderIndividuumToCanvas(Individuum individuum, BufferedImage prevorirousDrawing) {
-		BufferedImage newImage = new BufferedImage(prevorirousDrawing.getWidth(), prevorirousDrawing.getHeight(), prevorirousDrawing.getType());
-		newImage.setData(prevorirousDrawing.getData());
+		BufferedImage newImage = prevorirousDrawing;
 		
 		//Farbwert bestimmen
 		//Nutze den gemittelten Farbwert aus dem Bildbereich
@@ -64,8 +63,8 @@ public class Renderer {
 				Color color = new Color(RGBColor);
 
 				sum_r += color.getRed();
-				sum_g += color.getBlue();
-				sum_b += color.getGreen();			
+				sum_g += color.getGreen();
+				sum_b += color.getBlue();			
 			}
 		}
 		
