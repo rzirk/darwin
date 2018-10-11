@@ -54,38 +54,6 @@ public class CreatePopulation {
 		Point endPoint = Renderer.ImageRangeToDNARange(new Point(randomXEnd, randomYEnd),
 				goal);
 
-		//Nutze den gemittelten Farbwert aus dem Bildbereich
-		Rectangle rect = new Rectangle(Renderer.DNARangeToImageRange(startPoint, goal));
-		rect.add(Renderer.DNARangeToImageRange(endPoint, goal));
-
-		long sum_r = 0, sum_g = 0, sum_b = 0;
-		
-		final WritableRaster inRaster = goal.getRaster();
-
-		int[] pixels = new int[3*goal.getWidth()];
-
-		for(int y = rect.y; y < rect.y + rect.height; y++) {
-
-			pixels = inRaster.getPixels( 0, y, rect.y + rect.height, 1, pixels );
-
-			for(int x = rect.x; x < rect.x + rect.width; x++) {
-				int m = x*3; 	
-
-				sum_r += pixels[m+0]; 
-				sum_g += pixels[m+1]; 
-				sum_b += pixels[m+2]; 
-			}
-		}
-		
-		Color color = null;
-		if(rect.width == 0 || rect.height == 0) {
-			color = new Color(Cache.getInstance().goal.getRGB(rect.x,rect.y));
-		} else {
-			 color = new Color((int) (sum_r / (rect.width * rect.height)),
-					(int) (sum_g / (rect.width * rect.height)),
-					(int) (sum_b / (rect.width * rect.height)));	
-		}
-
-		return new Individuum(startPoint, endPoint, color);
+		return new Individuum(startPoint, endPoint);
 	}
 }

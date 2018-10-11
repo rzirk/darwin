@@ -10,7 +10,7 @@ public class Mutation {
 
 	public static Individuum mutateIndividuum(Individuum individuum) {
 		Random rand = new Random();
-		int genomMutation = rand.nextInt(3);
+		int genomMutation = rand.nextInt(2);
 
 		int xOrY = rand.nextInt(2); //X is 0, Y is 1
 
@@ -32,17 +32,6 @@ public class Mutation {
 				int newPoint = individuum.getDNA().end.y;
 				individuum.getDNA().end.y = mutateIntBitwise(newPoint);
 			}
-			break;
-		case 2: //Color
-			int newColor = individuum.getDNA().Color.getRGB();
-			newColor = mutateIntBitwise(newColor);
-
-			int  red   = (newColor & 0x00ff0000) >> 16;
-			int  green = (newColor & 0x0000ff00) >> 8;
-			int  blue  =  newColor & 0x000000ff;
-
-			individuum.getDNA().Color = new Color(red, green, blue);
-
 			break;
 		}
 
