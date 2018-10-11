@@ -17,21 +17,18 @@ import de.ricardo.genetic.darwin.utils.Cache;
 import de.ricardo.genetic.darwin.utils.Renderer;
 
 public class CreatePopulation {
+	
+Renderer renderer;
+	
+	public CreatePopulation() {
+		this.renderer = new Renderer();
+	}
+	
 	public List<Individuum> initializePopulation(int populationSize, BufferedImage goal) {
 		List<Individuum> individuals = new ArrayList<Individuum>();
-		//BufferedImage canvas = new BufferedImage(goal.getWidth(), goal.getHeight(), goal.getType()); 
 
 		for (int i = 0; i < populationSize; i++) {
 			individuals.add(initializeIndividuum(goal));
-			//Debug
-			/*canvas = Renderer.renderIndividuumToCanvas(individuals.get(i), canvas);
-			String test = "C:\\Users\\ricardo\\Desktop\\genetischeAlgorithmen\\test\\firstPopulation\\test_"+i+".jpg";
-
-			try {
-				ImageIO.write(canvas, "jpg", new File(test));
-			}catch(IOException exception) {
-				exception.printStackTrace();
-			}*/
 		}
 
 		return individuals;
@@ -49,14 +46,14 @@ public class CreatePopulation {
 		randomXEnd = rand.nextInt(goal.getWidth());
 		randomYEnd = rand.nextInt(goal.getHeight());
 
-		Point startPoint = Renderer.ImageRangeToDNARange(new Point(randomXStart, randomYStart),
+		Point startPoint = renderer.ImageRangeToDNARange(new Point(randomXStart, randomYStart),
 				goal);
-		Point endPoint = Renderer.ImageRangeToDNARange(new Point(randomXEnd, randomYEnd),
+		Point endPoint = renderer.ImageRangeToDNARange(new Point(randomXEnd, randomYEnd),
 				goal);
 
 		//Nutze den gemittelten Farbwert aus dem Bildbereich
-		Rectangle rect = new Rectangle(Renderer.DNARangeToImageRange(startPoint, goal));
-		rect.add(Renderer.DNARangeToImageRange(endPoint, goal));
+		Rectangle rect = new Rectangle(renderer.DNARangeToImageRange(startPoint, goal));
+		rect.add(renderer.DNARangeToImageRange(endPoint, goal));
 
 		long sum_r = 0, sum_g = 0, sum_b = 0;
 		

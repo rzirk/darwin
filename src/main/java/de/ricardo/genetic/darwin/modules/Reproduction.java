@@ -6,16 +6,19 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.CancelablePrintJob;
-
 import de.ricardo.genetic.darwin.utils.Cache;
 import de.ricardo.genetic.darwin.utils.Renderer;
 import de.ricardo.genetic.darwin.utils.ReproductionHelper;
 
 public class Reproduction {
 	
+	private Renderer renderer;
+	
+	public Reproduction() {
+		this.renderer = new Renderer();
+	}
 
-	public static Individuum createChild(Individuum parent1, Individuum parent2) {
+	public Individuum createChild(Individuum parent1, Individuum parent2) {
 		Individuum child = null;
 
 		Point childrenStartingPoint = ReproductionHelper.mixPoints(parent1.getDNA().start,
@@ -24,8 +27,8 @@ public class Reproduction {
 				parent2.getDNA().end);
 		
 		//Nutze den gemittelten Farbwert aus dem Bildbereich
-		Rectangle rect = new Rectangle(Renderer.DNARangeToImageRange(childrenStartingPoint, Cache.getInstance().goal));
-		rect.add(Renderer.DNARangeToImageRange(childrenEndPoint, Cache.getInstance().goal));
+		Rectangle rect = new Rectangle(renderer.DNARangeToImageRange(childrenStartingPoint, Cache.getInstance().goal));
+		rect.add(renderer.DNARangeToImageRange(childrenEndPoint, Cache.getInstance().goal));
 
 		long sum_r = 0, sum_g = 0, sum_b = 0;
 		
@@ -47,8 +50,8 @@ public class Reproduction {
 		Color color = null;
 		if(rect.width == 0 || rect.height == 0) {
 			color = new Color(Cache.getInstance().goal.getRGB(
-					Renderer.DNARangeToImageRange(childrenStartingPoint,Cache.getInstance().goal).x,
-					Renderer.DNARangeToImageRange(childrenStartingPoint,Cache.getInstance().goal).y));
+					renderer.DNARangeToImageRange(childrenStartingPoint,Cache.getInstance().goal).x,
+					renderer.DNARangeToImageRange(childrenStartingPoint,Cache.getInstance().goal).y));
 		} else {
 			 color = new Color((int) (sum_r / (rect.width * rect.height)),
 					(int) (sum_g / (rect.width * rect.height)),
@@ -61,7 +64,7 @@ public class Reproduction {
 		return child;
 	}
 	
-	public static List<Individuum> createNextGeneration(List<Individuum> shuffledBreeders, int numberOfChildren) {
+	public List<Individuum> createNextGeneration(List<Individuum> shuffledBreeders, int numberOfChildren) {
 		List<Individuum> nextGeneration = new ArrayList<Individuum>();
 		
 		for (int i = 0; i < shuffledBreeders.size()/2; i++) {

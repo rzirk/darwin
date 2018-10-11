@@ -8,7 +8,7 @@ import com.arturmkrtchyan.sizeof4j.SizeOf;
 
 public class Mutation {
 
-	public static Individuum mutateIndividuum(Individuum individuum) {
+	public Individuum mutateIndividuum(Individuum individuum) {
 		Random rand = new Random();
 		int genomMutation = rand.nextInt(3);
 
@@ -49,7 +49,7 @@ public class Mutation {
 		return individuum;
 	}
 
-	public static List<Individuum> mutatePopulation(List<Individuum> population, int chanceOfMutation) {
+	public List<Individuum> mutatePopulation(List<Individuum> population, int chanceOfMutation) {
 		Random rand = new Random();
 		
 		for(int i = 0; i < population.size(); i++) {
@@ -62,7 +62,7 @@ public class Mutation {
 		return population;
 	}
 
-	private static int mutateIntBitwise(int mutator) {
+	private int mutateIntBitwise(int mutator) {
 
 		int numberOfBits = SizeOf.intSize()*8;
 		Random rand = new Random();
