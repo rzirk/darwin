@@ -7,13 +7,13 @@ import java.util.Random;
 
 public class Selection {
 
-	public static List<Individuum> sortPopulationByFitness(List<Individuum> population) {
+	public List<Individuum> sortPopulationByFitness(List<Individuum> population) {
 		
 		Collections.sort(population);
 		return population;
 	}
 	
-	public static List<Individuum> selectFromPopulation(List<Individuum> sortedPoulation, int numberOfBestSamples,
+	public List<Individuum> selectFromPopulation(List<Individuum> sortedPoulation, int numberOfBestSamples,
 			int numberOfLuckeFew) {
 		List<Individuum> breeders = new ArrayList<Individuum>();
 		
@@ -32,7 +32,7 @@ public class Selection {
 		return breeders;
 	}
 	
-	public static List<Individuum> selectFromPopulationBestOnes(List<Individuum> sortedPoulation, int numberOfBestSamples) {
+	public List<Individuum> selectFromPopulationBestOnes(List<Individuum> sortedPoulation, int numberOfBestSamples) {
 		List<Individuum> breeders = new ArrayList<Individuum>();
 		
 		for (int i = 1; i <= numberOfBestSamples; i++) {

@@ -9,7 +9,7 @@ import de.ricardo.genetic.darwin.modules.Individuum;
 
 public class Renderer {
 	
-	public static Point DNARangeToImageRange(Point DNA, BufferedImage Canvas) {
+	public Point DNARangeToImageRange(Point DNA, BufferedImage Canvas) {
 		
 		int offsetX = Canvas.getWidth()/2;
 		int offsetY = Canvas.getHeight()/2;
@@ -25,7 +25,7 @@ public class Renderer {
 		return output;
 	}
 	
-	public static Point ImageRangeToDNARange(Point Image, BufferedImage Canvas) {
+	public Point ImageRangeToDNARange(Point Image, BufferedImage Canvas) {
 		
 		int offsetX = Canvas.getWidth()/2;
 		int offsetY = Canvas.getHeight()/2;
@@ -41,7 +41,7 @@ public class Renderer {
 		return output;
 	}
 	
-	public static BufferedImage renderIndividuumToCanvas(Individuum individuum, BufferedImage prevorirousDrawing) {
+	public BufferedImage renderIndividuumToCanvas(Individuum individuum, BufferedImage prevorirousDrawing) {
 		BufferedImage newImage = new BufferedImage(prevorirousDrawing.getWidth(), prevorirousDrawing.getHeight(), prevorirousDrawing.getType());
 		newImage.setData(prevorirousDrawing.getData());
 		

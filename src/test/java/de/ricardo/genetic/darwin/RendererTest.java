@@ -15,6 +15,8 @@ import junit.framework.TestCase;
 
 public class RendererTest extends TestCase {
 	
+	Renderer renderer = new Renderer();
+	
 	public void testRanging() {
 		
 		BufferedImage canvas = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
@@ -23,18 +25,18 @@ public class RendererTest extends TestCase {
 		Point endPoint = new Point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 		Point middlePoint = new Point(0, 0);
 		
-		Point imageRangeMax = Renderer.DNARangeToImageRange(startingPoint, canvas);
-		Point imageRangeMin = Renderer.DNARangeToImageRange(endPoint, canvas);
-		Point imageRangeMiddle = Renderer.DNARangeToImageRange(middlePoint, canvas);
+		Point imageRangeMax = renderer.DNARangeToImageRange(startingPoint, canvas);
+		Point imageRangeMin = renderer.DNARangeToImageRange(endPoint, canvas);
+		Point imageRangeMiddle = renderer.DNARangeToImageRange(middlePoint, canvas);
 
 		
 		assertEquals(new Point(400,400), imageRangeMax);
 		assertEquals(new Point(200,200), imageRangeMiddle);
 		assertEquals(new Point(0,0), imageRangeMin);
 		
-		Point resultMax = Renderer.ImageRangeToDNARange(imageRangeMax, canvas);
-		Point resultMin = Renderer.ImageRangeToDNARange(imageRangeMin, canvas);
-		Point resultMiddle = Renderer.ImageRangeToDNARange(imageRangeMiddle, canvas);
+		Point resultMax = renderer.ImageRangeToDNARange(imageRangeMax, canvas);
+		Point resultMin = renderer.ImageRangeToDNARange(imageRangeMin, canvas);
+		Point resultMiddle = renderer.ImageRangeToDNARange(imageRangeMiddle, canvas);
 
 		//assertEquals(startingPoint, resultMax);
 		//assertEquals(endPoint, resultMin);
@@ -50,7 +52,7 @@ public class RendererTest extends TestCase {
 
 		BufferedImage canvas = new BufferedImage(400, 400, BufferedImage.TYPE_3BYTE_BGR);
 		Individuum individuum = new Individuum(startPoint, endPoint, color);
-		 canvas = Renderer.renderIndividuumToCanvas(individuum, canvas);
+		 canvas = renderer.renderIndividuumToCanvas(individuum, canvas);
 		 
 		 Fitness fitness = new Fitness();
 		 try {

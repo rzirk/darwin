@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -32,7 +33,6 @@ public class App
 		int number_of_child = size_population / best_sample;
 		int number_of_generation = 10;
 		int chance_of_mutation = 20;
-		int numberOfRetries = 5;
 
 		BufferedImage goal = null;
 		try {
@@ -60,52 +60,24 @@ public class App
 		int k = 0;
 		double delta = 1.0;
 		double prevoriousFitness = 0.0;
+		Renderer renderer = new Renderer();
+		GenerationStepper generationStepper = new GenerationStepper();
 
 		while (alikness < 95.0) {//Komplettes Bild
 			k++;
-			List<Individuum> population = createPopulation.initializePopulation(size_population, goal);
-
-			int retryCounter = 0;
-			for(int i = 0; i < number_of_generation; i++) {
-
-				if (retryCounter == numberOfRetries) {
-					break;
-				}
-
-				//CalculateFitness
-
-				BufferedImage localCanvas = new BufferedImage(goal.getWidth(), goal.getHeight(), goal.getType()); 
-				localCanvas.setData(canvas.getRaster());
-
-				double fitnessValues[] = new double[population.size()];
-				fitnessValues = fitness.calculateFitnessLinear(population, localCanvas, goal);
-				for(int j=0; j<population.size(); j++) {
-					population.get(j).fitness = fitnessValues[j];
-				}
-
-				//SortByFitness [Selection] (High index is better)
-				population = Selection.sortPopulationByFitness(population);
-
-				System.out.println("Highest fitness gen. "+(i+1)+": "+population.get(population.size()-1).fitness);
-
-				delta = population.get(population.size()-1).fitness - prevoriousFitness;
-				if(delta == 0.0) {
-					retryCounter++;
-				} else {
-					retryCounter = 0;
-				}
-
-				prevoriousFitness = population.get(population.size()-1).fitness;
-				//Reproduction
-				population = Reproduction.createNextGeneration(
-						Selection.selectFromPopulationBestOnes(population, best_sample*2),
-						number_of_child);
-				//Mutation
-				population = Mutation.mutatePopulation(population, chance_of_mutation);
+			List<Individuum> population = new ArrayList<Individuum>();
+			try {
+				population = generationStepper.startNextGeneration(
+						canvas, goal, size_population, best_sample, chance_of_mutation, number_of_generation);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+
+			
 			//Render best solution
 			prevCanvas = canvas;
-			canvas = Renderer.renderIndividuumToCanvas(population.get(population.size()-1), canvas);
+			canvas = renderer.renderIndividuumToCanvas(population.get(population.size()-1), canvas);
 			String test = "C:\\Users\\ricardo\\Desktop\\genetischeAlgorithmen\\test\\Testrender\\outputGen"+k+".jpg";
 			try {
 				ImageIO.write(canvas, "jpg", new File(test));

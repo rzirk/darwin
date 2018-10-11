@@ -16,46 +16,28 @@ import java.util.concurrent.Future;
 import de.ricardo.genetic.darwin.utils.Renderer;
 
 public class Fitness {
+	
+	Renderer renderer;
+	
+	public Fitness() {
+		this.renderer = new Renderer();
+	}
 
-	public double[] calculateFitnessLinear(List<Individuum> individuums, 
+	public double calculateFitnessLinear(Individuum individuum, 
 			BufferedImage currentDrawing,
 			BufferedImage goal) {
 
-		int numberOfCPUCores = 4;
-		List<BufferedImage> individuumRender = new ArrayList<BufferedImage>();
+		BufferedImage individuumRender = renderer.renderIndividuumToCanvas(individuum, currentDrawing);
+		double fitness = 0.0;
 
-		for(int i = 0; i < individuums.size(); i++) {
-			individuumRender.add(Renderer.renderIndividuumToCanvas(individuums.get(i), currentDrawing));
+		try {
+			fitness = getGlobalFitness(individuumRender,goal);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		ExecutorService executorService = Executors.newFixedThreadPool(numberOfCPUCores);
-
-		List<Future<double[]>> fitnessChunks = new ArrayList<Future<double[]>>();
-		for(int j=0; j < numberOfCPUCores; j++) {
-			int range = individuums.size()/numberOfCPUCores;
-			fitnessChunks.add(executorService.submit(new FitnessThread(individuumRender.subList(j*range, j*range+(range)), goal)));
-		}
-
-		double calculateFitness[][] = new double[numberOfCPUCores][individuums.size() / numberOfCPUCores];
-		for(int j=0; j < numberOfCPUCores; j++) {
-			try {
-				calculateFitness[j] = fitnessChunks.get(j).get();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		executorService.shutdownNow();
-
-		double output[] = new double[individuums.size()];
-
-		output = concatAll(calculateFitness[0], calculateFitness[1], calculateFitness[2], calculateFitness[3]);
-		
-		return output;
+		return fitness;
 	}
 
 	public double getGlobalFitness(BufferedImage currentDrawing,
